@@ -3,6 +3,7 @@
 #include "gta/enums.hpp"
 
 #include <memory/handle.hpp>
+#include <security/ObfVar.hpp>
 
 class CCommunications;
 class FriendRegistry;
@@ -23,6 +24,7 @@ class CPedFactory;
 class GtaThread;
 class GameDataHash;
 class InputMethodEditor;
+class CAnticheatContext;
 
 namespace rage
 {
@@ -411,6 +413,11 @@ namespace big
 
 		PVOID m_add_skeleton_extension;
 		int* m_skeleton_extension_count;
+
+		rage::Obf32** m_anticheat_initialized_hash;
+		PVOID m_get_anticheat_initialized_hash;
+		PVOID m_get_anticheat_initialized_hash_2;
+		CAnticheatContext** m_anticheat_context;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

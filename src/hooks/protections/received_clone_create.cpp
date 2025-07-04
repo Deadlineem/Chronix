@@ -1,8 +1,8 @@
+#include "gta/pools.hpp"
+#include "gta_util.hpp"
 #include "hooking/hooking.hpp"
 #include "services/players/player_service.hpp"
 #include "util/notify.hpp"
-#include "gta/pools.hpp"
-#include "gta_util.hpp"
 
 #include <network/netObjectIds.hpp>
 
@@ -41,7 +41,9 @@ namespace big
 				std::string target = "<UNKNOWN>";
 
 				if (auto tgt = g_player_service->get_by_id(object->m_owner_id))
+				{
 					target = tgt->get_name();
+				}
 
 				LOGF(stream::net_sync, WARNING, "Rejecting clone create from {}, who is trying to delete {}'s player ped", src->get_name(), target);
 				return;
@@ -66,23 +68,29 @@ namespace big
 			}
 		}
 
+#if 0
 		if (gta_util::get_net_object_ids()->is_object_id_usable(object_id))
 		{
 			LOGF(stream::net_sync, WARNING, "{} sent us an object create request with an object ID that is in our usable object ID list. Somebody lied to us...", src->get_name());
 			gta_util::get_net_object_ids()->remove_object_id(object_id);
 		}
+#endif
 
 		auto plyr = g_player_service->get_by_id(src->m_player_id);
 
 		if (plyr && plyr->block_clone_create) [[unlikely]]
+		{
 			return;
+		}
 
 		g.m_syncing_player      = src;
 		g.m_syncing_object_type = object_type;
 
 		g.debug.fuzzer.thread_id = GetCurrentThreadId();
 		if (g.debug.fuzzer.enabled_object_types[(int)object_type]) [[unlikely]]
+		{
 			g.debug.fuzzer.active = true;
+		}
 		g.debug.fuzzer.syncing_object_id = object_id;
 		g_hooking->get_original<hooks::received_clone_create>()(mgr, src, dst, object_type, object_id, object_flag, buffer, timestamp);
 		g.debug.fuzzer.active = false;

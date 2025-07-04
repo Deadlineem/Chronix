@@ -159,6 +159,9 @@ namespace big
 
 		detour_hook_helper::add<hooks::add_skeleton_extension>("ASE", g_pointers->m_gta.m_add_skeleton_extension);
 
+		detour_hook_helper::add<hooks::get_anticheat_initialized_hash>("GAIH", g_pointers->m_gta.m_get_anticheat_initialized_hash);
+		detour_hook_helper::add<hooks::get_anticheat_initialized_hash_2>("GAIH2", g_pointers->m_gta.m_get_anticheat_initialized_hash_2);
+
 		g_hooking = this;
 	}
 

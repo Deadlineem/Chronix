@@ -3,7 +3,7 @@
 #include "gta_pointers_layout_info.hpp"
 #include "sc_pointers_layout_info.hpp"
 
-#define GTA_VERSION_TARGET "1.70-3521"
+#define GTA_VERSION_TARGET "1.71-3570.0"
 
 namespace big
 {
@@ -558,10 +558,10 @@ namespace big
         // Send Chat Message
         {
             "SCM",
-            "48 81 EC 80 00 00 00 48 8B E9 48 8B CA 41",
+            "45 8A F9 4D 8B E0 48 8B EA",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
+                g_pointers->m_gta.m_send_chat_message = ptr.sub(0x2D).as<functions::send_chat_message>();
             }
         },
         // Get Gamer Online State
@@ -636,13 +636,13 @@ namespace big
                 g_pointers->m_gta.m_script_vm = ptr.add(1).rip().as<functions::script_vm>();
             }
         },
-        // Handle Join Request
+        // Handle Join Request (partially obfuscated now, crutches deployed)
         {
             "HJR",
-            "48 8B C4 48 89 58 08 4C 89 48 20 4C 89 40 18 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 18",
+            "4C 8B F1 45 33 ED 48 8D 4D",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_handle_join_request = ptr.as<PVOID>();
+                g_pointers->m_gta.m_handle_join_request = ptr.sub(0x2D).as<PVOID>();
             }
         },
         // Write Join Response Data
@@ -693,7 +693,7 @@ namespace big
         // Serialize Join Request Message 2
         {
             "SJRM2",
-            "E8 ? ? ? ? 48 8D 8D C8 01 00 00 8A D8",
+            "E8 ? ? ? ? 48 8D 8D E0 01 00 00 8A D8",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_serialize_join_request_message_2 = ptr.add(1).rip().as<PVOID>();
@@ -1160,14 +1160,22 @@ namespace big
                 g_pointers->m_gta.m_handle_chat_message = ptr.as<functions::handle_chat_message>();
             }
         },
-        // Language & Update Language
+        // Language
         {
-            "L&UL",
+            "L",
             "83 3D ? ? ? ? ? 44 8B C3",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_language = ptr.add(2).rip().add(1).as<eGameLanguage*>();
-                g_pointers->m_gta.m_update_language = ptr.add(0x38).rip().as<functions::update_language>();
+            }
+        },
+        // Update Language
+        {
+            "UL",
+            "84 C0 B1 01",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_update_language = ptr.add(0x11).rip().as<functions::update_language>();
             }
         },
         // Get Host Array Handler By Index
@@ -1386,7 +1394,7 @@ namespace big
         // Blame Explode
         {
             "BE",
-            "0F 85 EE 00 00 00 84 C0",
+            "0F 85 EF 00 00 00 84 C0",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_blame_explode = ptr;
@@ -1404,7 +1412,7 @@ namespace big
         // Is Matchmaking Session Valid
         {
             "IMSV",
-            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 45 0F",
+            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 49 83",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_is_matchmaking_session_valid = ptr;
@@ -1754,7 +1762,7 @@ namespace big
         // Session Request Patch
         {
             "SRP",
-            "45 38 BE 48 B7 00 00 0F 85 F6 00 00 00",
+            "45 38 8E 48 B7 00 00 0F 85 43 FE FF FF",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_session_request_patch = ptr.add(0x14).as<PVOID>();
@@ -1900,10 +1908,10 @@ namespace big
         // Network Can Access Multiplayer
         {
             "NCAM",
-            "E9 4F 01 00 00 33 D2 8B CB",
+            "E9 89 01 00 00 48 8B CF E8 13 A3 04 00",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_network_can_access_multiplayer = ptr.add(10).rip().as<PVOID>();
+                g_pointers->m_gta.m_network_can_access_multiplayer = ptr.add(0x23).rip().as<PVOID>();
             }
         },
         // BattlEye Network Bail Patch
@@ -1924,6 +1932,34 @@ namespace big
                 ptr = ptr.add(1).rip();
                 g_pointers->m_gta.m_add_skeleton_extension = ptr.as<PVOID>();
                 g_pointers->m_gta.m_skeleton_extension_count = ptr.add(0x2C).rip().as<int*>();
+            }
+        },
+        // Anticheat Initialized Hash
+        {
+            "AIH",
+            "48 83 EC 20 48 8B D9 48 8B 0D ? ? ? ? 48 85 C9 0F 84",
+            [](memory::handle ptr)
+            {
+               g_pointers->m_gta.m_anticheat_initialized_hash = ptr.add(10).rip().as<rage::Obf32**>();
+               g_pointers->m_gta.m_get_anticheat_initialized_hash = ptr.add(24).rip().add(1).rip().as<PVOID>();
+            }
+        },
+        // Anticheat Initialized Hash 2
+        {
+            "AIH2",
+            "89 8B E8 00 00 00 48 8B 0D",
+            [](memory::handle ptr)
+            {
+               g_pointers->m_gta.m_get_anticheat_initialized_hash_2 = ptr.add(14).rip().as<PVOID>();
+            }
+        },
+        // Anticheat Context
+        {
+            "AC",
+            "8B D0 41 54",
+            [](memory::handle ptr)
+            {
+               g_pointers->m_gta.m_anticheat_context = ptr.sub(10).rip().as<CAnticheatContext**>();
             }
         }
         >(); // don't leave a trailing comma at the end

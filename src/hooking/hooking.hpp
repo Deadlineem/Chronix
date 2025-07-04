@@ -214,6 +214,9 @@ namespace big
 		static uint32_t network_can_access_multiplayer(uint32_t a1, uint64_t* a2);
 
 		static void* add_skeleton_extension(rage::fwEntity* entity);
+
+		static std::uint32_t get_anticheat_initialized_hash();
+		static std::uint32_t get_anticheat_initialized_hash_2(void* ac_var, std::uint32_t seed);
 	};
 
 	class minhook_keepalive

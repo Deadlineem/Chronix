@@ -12,12 +12,15 @@ namespace big
 
 		ImGui::SeparatorText("SETTINGS_LANGUAGES"_T.data());
 
-		if (language_entries.contains(current_pack) && ImGui::BeginCombo("VIEW_SETTINGS_MENU_LANGUAGE"_T.data(), language_entries.at(current_pack).name.c_str()))
+		if (language_entries.contains(current_pack)
+		    && ImGui::BeginCombo("VIEW_SETTINGS_MENU_LANGUAGE"_T.data(), language_entries.at(current_pack).name.c_str()))
 		{
 			for (auto& i : language_entries)
 			{
 				if (ImGui::Selectable(i.second.name.c_str(), i.first == current_pack))
+				{
 					g_translation_service.select_language_pack(i.first);
+				}
 
 				if (i.first == current_pack)
 				{
@@ -54,7 +57,8 @@ namespace big
 			g_thread_pool->push([] {
 				g_translation_service.update_n_reload_language_packs();
 
-				g_notification_service.push_success("LANGUAGE"_T.data(), "VIEW_SETTINGS_FINISHED_UPDATING_TRANSLATIONS"_T.data());
+				g_notification_service.push_success("LANGUAGE"_T.data(),
+				    "VIEW_SETTINGS_FINISHED_UPDATING_TRANSLATIONS"_T.data());
 			});
 		}
 

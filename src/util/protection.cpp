@@ -1,4 +1,5 @@
 #include "protection.hpp"
+
 #include "model_info.hpp"
 #include "scripts.hpp"
 
@@ -8,11 +9,17 @@ namespace big::protection
 	bool is_crash_object(rage::joaat_t model)
 	{
 		if (crash_objects.contains(model))
+		{
 			return true;
+		}
 		if (!model_info::get_model(model))
+		{
 			return false;
+		}
 		if (!model_info::is_model_of_type(model, eModelType::Object, eModelType::Time, eModelType::Weapon, eModelType::Destructable))
-			return true;	
+		{
+			return true;
+		}
 		return false;
 	}
 
@@ -20,9 +27,13 @@ namespace big::protection
 	bool is_crash_ped(rage::joaat_t model)
 	{
 		if (crash_peds.contains(model))
+		{
 			return true;
+		}
 		if (!model_info::is_model_of_type(model, eModelType::Ped))
+		{
 			return true;
+		}
 		return false;
 	}
 
@@ -30,9 +41,13 @@ namespace big::protection
 	bool is_crash_vehicle(rage::joaat_t model)
 	{
 		if (crash_vehicles.contains(model))
+		{
 			return true;
+		}
 		if (!model_info::is_model_of_type(model, eModelType::Vehicle))
+		{
 			return true;
+		}
 		return false;
 	}
 
@@ -82,9 +97,7 @@ namespace big::protection
 		BLOCK_IN_FREEMODE
 	};
 
-	static std::unordered_map<rage::joaat_t, script_block_state> script_block_states = 
-	{{
-		{"AM_Darts"_J, script_block_state::BLOCK_ALWAYS},
+	static std::unordered_map<rage::joaat_t, script_block_state> script_block_states = {{{"AM_Darts"_J, script_block_state::BLOCK_ALWAYS},
 	    {"AM_PI_MENU"_J, script_block_state::BLOCK_ALWAYS},
 	    {"fm_intro"_J, script_block_state::BLOCK_ALWAYS},
 	    {"golf_mp"_J, script_block_state::BLOCK_IN_FREEMODE},
@@ -102,11 +115,10 @@ namespace big::protection
 	    {"gunslinger_arcade"_J, script_block_state::BLOCK_ALWAYS}, // Badlands Revenge II?
 	    {"wizard_arcade"_J, script_block_state::BLOCK_ALWAYS},
 	    {"ggsm_arcade"_J, script_block_state::BLOCK_ALWAYS}, // Space Monkey?
-	    {"puzzle"_J, script_block_state::BLOCK_ALWAYS},     // Qub3d?
+	    {"puzzle"_J, script_block_state::BLOCK_ALWAYS},      // Qub3d?
 	    {"camhedz_arcade"_J, script_block_state::BLOCK_ALWAYS},
 	    {"fm_content_ufo_abduction"_J, script_block_state::BLOCK_ALWAYS},
-	    {"SCTV"_J, script_block_state::BLOCK_ALWAYS}}
-	};
+	    {"SCTV"_J, script_block_state::BLOCK_ALWAYS}}};
 
 	bool is_valid_player_model(rage::joaat_t model)
 	{
@@ -115,18 +127,24 @@ namespace big::protection
 
 	bool should_allow_script_launch(int launcher_script)
 	{
-		if (launcher_script >= launcher_scripts.size())
+		if (static_cast<size_t>(launcher_script) >= launcher_scripts.size())
+		{
 			return false;
+		}
 
 		auto script = launcher_scripts[launcher_script];
 
 		if (auto it = script_block_states.find(script); it != script_block_states.end())
 		{
 			if (it->second == script_block_state::BLOCK_ALWAYS)
+			{
 				return false;
-			
+			}
+
 			if (it->second == script_block_state::BLOCK_IN_FREEMODE && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			{
 				return false;
+			}
 		}
 
 		return true;

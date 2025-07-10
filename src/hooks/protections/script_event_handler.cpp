@@ -395,7 +395,7 @@ namespace big
 		case eRemoteEvent::InteriorControl:
 		{
 			int interior = (int)args[3];
-			if (interior < 0 || interior > 173) // the upper bound will change after an update
+			if (interior < 0 || interior > 176) // the upper bound will change after an update
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 				{

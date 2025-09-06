@@ -104,7 +104,7 @@ namespace big
 		const int maxAttempts                          = 3; // Maximum allowed attempts
 		static bool errorLogged                        = false;
 
-		std::string headerImageUrl = "https://chronix.fpr.net/img/header/" + g.window.selected_header_image;
+		std::string headerImageUrl = "https://kaos.fpr.net/images/header/" + g.window.selected_header_image;
 
 		if ((!headerTextureLoaded || g.window.selected_header_image_changed) && loadAttempts < maxAttempts)
 		{

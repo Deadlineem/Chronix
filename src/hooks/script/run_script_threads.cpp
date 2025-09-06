@@ -43,9 +43,6 @@ namespace big
 	void hooks::download_lua_script_bundle()
 	{
 		const std::vector<std::string> urls = {
-			"https://raw.githubusercontent.com/Deadlineem/Extras_Addon/refs/heads/main/Extras-Addon.lua", // Extras Addon
-			"https://raw.githubusercontent.com/Deadlineem/Extras_Addon/refs/heads/main/Extras-data.lua", 
-			"https://raw.githubusercontent.com/Deadlineem/Extras_Addon/refs/heads/main/json.lua", 
 		    "https://raw.githubusercontent.com/Deadlineem/VehicleReward/refs/heads/main/vehicle_reward.lua" // Claim Vehicle as Personal ShinyWasabi
 		};
 

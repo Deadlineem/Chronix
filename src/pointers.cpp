@@ -1947,7 +1947,7 @@ namespace big
         // Anticheat Initialized Hash 2
         {
             "AIH2",
-            "89 8B E8 00 00 00 48 8B 0D",
+            "89 8B E8 00 00 00 48 8B 0D", 
             [](memory::handle ptr)
             {
                g_pointers->m_gta.m_get_anticheat_initialized_hash_2 = ptr.add(14).rip().as<PVOID>();
@@ -1956,10 +1956,10 @@ namespace big
         // Anticheat Context
         {
             "AC",
-            "8B D0 41 54",
+            "69 C9 FD 43 03 00 8B D0",
             [](memory::handle ptr)
             {
-               g_pointers->m_gta.m_anticheat_context = ptr.sub(10).rip().as<CAnticheatContext**>();
+               g_pointers->m_gta.m_anticheat_context = ptr.sub(4).rip().as<CAnticheatContext**>();
             }
         }
         >(); // don't leave a trailing comma at the end

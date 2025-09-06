@@ -30,27 +30,27 @@ namespace big::mobile
 	{
 		inline void request_ammo_drop()
 		{
-			*scr_globals::freemode_global.at(917).as<int*>() = 1;
+			*scr_globals::freemode_global.at(918).as<int*>() = 1;
 		}
 
 		inline void request_boat_pickup()
 		{
-			*scr_globals::freemode_global.at(918).as<int*>() = 1;
+			*scr_globals::freemode_global.at(919).as<int*>() = 1;
 		}
 
 		inline void request_helicopter_pickup()
 		{
-			*scr_globals::freemode_global.at(919).as<int*>() = 1;
+			*scr_globals::freemode_global.at(920).as<int*>() = 1;
 		}
 
 		inline void request_backup_helicopter()
 		{
-			*scr_globals::freemode_global.at(4522).as<int*>() = 1;
+			*scr_globals::freemode_global.at(4524).as<int*>() = 1;
 		}
 
 		inline void request_airstrike()
 		{
-			*scr_globals::freemode_global.at(4523).as<int*>() = 1;
+			*scr_globals::freemode_global.at(4525).as<int*>() = 1;
 		}
 	}
 
@@ -93,12 +93,12 @@ namespace big::mobile
 	{
 		inline void request_bullshark_testosterone()
 		{
-			*scr_globals::freemode_properties.at(925).as<int*>() = 1;
+			*scr_globals::freemode_properties.at(926).as<int*>() = 1;
 		}
 
 		inline void request_ballistic_armor() //i think this is a ceo ability atleast?
 		{
-			*scr_globals::freemode_global.at(927).as<int*>() = 1;
+			*scr_globals::freemode_global.at(928).as<int*>() = 1;
 		}
 	}
 
@@ -106,32 +106,32 @@ namespace big::mobile
 	{
 		inline void request_avenger()
 		{
-			*scr_globals::freemode_global.at(964).as<int*>() = 1;
+			*scr_globals::freemode_global.at(965).as<int*>() = 1;
 		}
 
 		inline void request_kosatka()
 		{
-			*scr_globals::freemode_global.at(991).as<int*>() = 1;
+			*scr_globals::freemode_global.at(992).as<int*>() = 1;
 		}
 
 		inline void request_mobile_operations_center()
 		{
-			*scr_globals::freemode_global.at(956).as<int*>() = 1;
+			*scr_globals::freemode_global.at(957).as<int*>() = 1;
 		}
 
 		inline void request_terrorbyte()
 		{
-			*scr_globals::freemode_global.at(969).as<int*>() = 1;
+			*scr_globals::freemode_global.at(970).as<int*>() = 1;
 		}
 
 		inline void request_acidlab()
 		{
-			*scr_globals::freemode_global.at(970).as<int*>() = 1;
+			*scr_globals::freemode_global.at(971).as<int*>() = 1;
 		}
 
 		inline void request_acidlab_bike()
 		{
-			*scr_globals::freemode_global.at(1025).as<int*>() = 1;
+			*scr_globals::freemode_global.at(1026).as<int*>() = 1;
 		}
 	}
 
@@ -155,7 +155,7 @@ namespace big::mobile
 
 		inline void summon_vehicle_by_index(int veh_idx)
 		{
-			if (*scr_globals::freemode_global.at(1016).as<int*>() != -1)
+			if (*scr_globals::freemode_global.at(1017).as<int*>() != -1)
 			{
 				return g_notification_service.push_warning("VEHICLE"_T.data(), "VEHICLE_MECHANIC_BUSY"_T.data());
 			}
@@ -174,11 +174,11 @@ namespace big::mobile
 			// only do this when spawn inside is enabled otherwise the vehicle will spawn relatively far away from players
 			if (g.clone_pv.spawn_inside)
 			{
-				*scr_globals::freemode_global.at(968).as<int*>() = 1; // disable vehicle node distance check
+				*scr_globals::freemode_global.at(969).as<int*>() = 1; // disable vehicle node distance check
 			}
-			*scr_globals::freemode_global.at(954).as<int*>() = 1; // tell freemode to spawn our vehicle
-			*scr_globals::freemode_global.at(1019).as<int*>() = 0; // required
-			*scr_globals::freemode_global.at(1016).as<int*>() = veh_idx;
+			*scr_globals::freemode_global.at(955).as<int*>()  = 1; // tell freemode to spawn our vehicle
+			*scr_globals::freemode_global.at(1020).as<int*>() = 0; // required
+			*scr_globals::freemode_global.at(1017).as<int*>() = veh_idx;
 
 			script::get_current()->yield(100ms);
 
@@ -193,7 +193,7 @@ namespace big::mobile
 			}
 
 			// blocking call till vehicle is delivered
-			notify::busy_spinner("Delivering vehicle...", scr_globals::freemode_global.at(1016).as<int*>(), -1);
+			notify::busy_spinner("Delivering vehicle...", scr_globals::freemode_global.at(1017).as<int*>(), -1);
 
 			if (g.clone_pv.spawn_inside)
 			{
@@ -206,7 +206,7 @@ namespace big::mobile
 	{
 		inline void request_taxi()
 		{
-			*scr_globals::freemode_global.at(879).as<int*>() = 1;
+			*scr_globals::freemode_global.at(880).as<int*>() = 1;
 		}
 
 		inline void request_gun_van()
@@ -233,3 +233,4 @@ namespace big::mobile
 		}
 	}
 }
+ 

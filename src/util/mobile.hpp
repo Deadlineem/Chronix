@@ -93,7 +93,7 @@ namespace big::mobile
 	{
 		inline void request_bullshark_testosterone()
 		{
-			*scr_globals::freemode_properties.at(926).as<int*>() = 1;
+			*scr_globals::freemode_global.at(926).as<int*>() = 1;
 		}
 
 		inline void request_ballistic_armor() //i think this is a ceo ability atleast?
@@ -233,4 +233,3 @@ namespace big::mobile
 		}
 	}
 }
- 

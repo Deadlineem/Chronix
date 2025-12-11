@@ -1556,7 +1556,7 @@ namespace big
 			}
 			case sync_node_id("CTrainGameStateDataNode"):
 			{
-				const auto train_node = (CTrainGameStateDataNode*)(node);
+				const auto train_node = (CTrainGameStateDataNode*)(node); // TODO
 				int track_id          = train_node->m_track_id;
 				if (track_id != -1 && (track_id < 0 || track_id >= 12))
 				{

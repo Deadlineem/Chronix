@@ -4,16 +4,17 @@
 
 namespace big::scr_globals
 {
-	static inline const script_global gsbd(2648929);
-	static inline const script_global gsbd_kicking(1876908);
-	static inline const script_global gsbd_fm_events(1918241);
+	static inline const script_global gsbd(2649159);
+	static inline const script_global gsbd_kicking(1877125);
+	static inline const script_global gsbd_fm_events(1922477);
 
-	static inline const script_global globalplayer_bd(2658016);
-	static inline const script_global gpbd_fm_3(1888737);
-	static inline const script_global gpbd_fm_1(1845225);
-	static inline const script_global interiors(1945923);
+	static inline const script_global globalplayer_bd(2658291);
+	static inline const script_global gpbd_fm_3(1892653);
 
-	static inline const script_global launcher_global(2699544);
+	static inline const script_global gpbd_fm_1(1845250);
+	static inline const script_global interiors(1950198);
+
+	static inline const script_global launcher_global(2699984);
 
 	// creator globals usually remain the same after updates
 	static inline const script_global terminate_creator(1574607); // NETWORK::NETWORK_BAIL(1, 0, 0); fm_*_creator
@@ -21,43 +22,43 @@ namespace big::scr_globals
 	static inline const script_global mission_creator_radar_follows_camera(2621443);
 	static inline const script_global mission_creator_exited(1574530);
 
-	static inline const script_global transition_state(1575014);
-	static inline const script_global sctv_spectator(2698102); // pausemenu_multiplayer function 0xE49C42EC
+	static inline const script_global transition_state(1575018);
+	static inline const script_global sctv_spectator(2698539); // pausemenu_multiplayer function 0xE49C42EC
 
-	static inline const script_global vehicle_global(1586540);
+	static inline const script_global vehicle_global(1583765);
 
-	static inline const script_global freemode_properties(2672964);
-	static inline const script_global freemode_global(2740054);
+	static inline const script_global freemode_properties(2673271);
+	static inline const script_global freemode_global(2733002);
 
-	static inline const script_global spawn_global(2696579);
+	static inline const script_global spawn_global(2697006);
 
-	static inline const script_global transaction_overlimit(4538671);
+	static inline const script_global transaction_overlimit(4516902);
 
 	static inline const script_global stats(2359296);
 
 	static inline const script_global session(1574589);
-	static inline const script_global session2(1575038);
-	static inline const script_global session3(33282);
+	static inline const script_global session2(1575042);
+	static inline const script_global session3(33776);
 	static inline const script_global session4(1574943);
-	static inline const script_global session5(1575013);
-	static inline const script_global session6(2696496); // freemode -> if (NETWORK::NETWORK_IS_GAME_IN_PROGRESS() && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+	static inline const script_global session5(1575017);
+	static inline const script_global session6(2696922); // freemode -> if (NETWORK::NETWORK_IS_GAME_IN_PROGRESS() && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 
 	static inline const script_global interaction_menu_access(2711261); // am_pi_menu -> if (NETWORK::NETWORK_IS_SIGNED_ONLINE()) first global after that
 
-	static inline const script_global disable_wasted_sound(2708261); // freemode -> AUDIO::PLAY_SOUND_FRONTEND(-1, "Wasted", "POWER_PLAY_General_Soundset", true);
+	static inline const script_global disable_wasted_sound(2708893); // freemode -> AUDIO::PLAY_SOUND_FRONTEND(-1, "Wasted", "POWER_PLAY_General_Soundset", true);
 
 	static inline const script_global passive(1574582); // if (((!PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED(bVar1), false) || Global_
 
-	static inline const script_global property_garage(1940049);
-	static inline const script_global property_names(1312335);
+	static inline const script_global property_garage(1944263);
+	static inline const script_global property_names(1312440);
 
-	static inline const script_global reset_clothing(104448); // freemode 75, &iLocal_.*, 2\);
+	static inline const script_global reset_clothing(105008); // freemode 75, &iLocal_.*, 2\);
 
-	static inline const script_global gun_van(1952452); // return -29.532f, 6435.136f, 31.162f;
+	static inline const script_global gun_van(1956819); // return -29.532f, 6435.136f, 31.162f;
 
-	static inline const script_global disable_phone(21205);
+	static inline const script_global disable_phone(21593);
 
-	static inline const script_global should_reset_fm_weapons(1578044);
+	static inline const script_global should_reset_fm_weapons(1576473);
 }
 
 namespace big::scr_locals

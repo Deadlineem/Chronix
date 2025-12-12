@@ -30,27 +30,27 @@ namespace big::mobile
 	{
 		inline void request_ammo_drop()
 		{
-			*scr_globals::freemode_global.at(918).as<int*>() = 1;
+			*scr_globals::freemode_global.at(548).as<int*>() = 1; // REGEX: if \(Global_.*?.f_.*?\)\n.*?\{\n.*?if \(!NETWORK::NETWORK_IS_SCRIPT_ACTIVE\("AM_AMMO_DROP", PLAYER::PLAYER_ID\(\), true, 0\)\)
 		}
 
 		inline void request_boat_pickup()
 		{
-			*scr_globals::freemode_global.at(919).as<int*>() = 1;
+			*scr_globals::freemode_global.at(539).as<int*>() = 1; // REGEX: if \(!NETWORK::NETWORK_IS_SCRIPT_ACTIVE\("AM_BOAT_TAXI", PLAYER::PLAYER_ID\(\), true, 0\)\)\n.*?\{\n.*?if \(Global_.*?.f_.*? == 1\)
 		}
 
 		inline void request_helicopter_pickup()
 		{
-			*scr_globals::freemode_global.at(920).as<int*>() = 1;
+			*scr_globals::freemode_global.at(540).as<int*>() = 1; // REGEX: if \(Global_.*?.f_.*? == true\)\n.*?\{\n.*?if \(!NETWORK::NETWORK_IS_SCRIPT_ACTIVE\("AM_HELI_TAXI", -1, true, 0\)\)
 		}
 
 		inline void request_backup_helicopter()
 		{
-			*scr_globals::freemode_global.at(4524).as<int*>() = 1;
+			*scr_globals::freemode_global.at(3578).as<int*>() = 1; // REGEX: if \(SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH\(joaat\("am_backup_heli"\)\) <= 0\)\n.*?\{\n.*?Global_.*?.f_.*? = 0;
 		}
 
 		inline void request_airstrike()
 		{
-			*scr_globals::freemode_global.at(4525).as<int*>() = 1;
+			*scr_globals::freemode_global.at(3579).as<int*>() = 1; //REGEX: if \(SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH\(joaat\("am_airstrike"\)\) <= 0\)\n.*?\{\n.*?Global_.*?.f_.*? = 0;
 		}
 	}
 
@@ -93,12 +93,12 @@ namespace big::mobile
 	{
 		inline void request_bullshark_testosterone()
 		{
-			*scr_globals::freemode_global.at(926).as<int*>() = 1;
+			*scr_globals::freemode_global.at(546).as<int*>() = 1; // REGEX: if \(Global_.*?.f_.*?\)\n.*?\{\n.*?if \(!NETWORK::NETWORK_IS_SCRIPT_ACTIVE\("AM_BRU_BOX", PLAYER::PLAYER_ID\(\), true, 0\)\)
 		}
 
 		inline void request_ballistic_armor() //i think this is a ceo ability atleast?
 		{
-			*scr_globals::freemode_global.at(928).as<int*>() = 1;
+			*scr_globals::freemode_global.at(548).as<int*>() = 1; // REGEX: if \(Global_.*?.f_.*?\)\n.*?\{\n.*?if \(!NETWORK::NETWORK_IS_SCRIPT_ACTIVE\("AM_AMMO_DROP", PLAYER::PLAYER_ID\(\), true, 0\)\)
 		}
 	}
 
@@ -106,32 +106,32 @@ namespace big::mobile
 	{
 		inline void request_avenger()
 		{
-			*scr_globals::freemode_global.at(965).as<int*>() = 1;
+			*scr_globals::freemode_global.at(594).as<int*>() = 1; // Look for if (IS_BIT_SET(Global_.*?.f_.*?, 1)) { BUNCH OF CODE BETWEEN if (!ENTITY::IS_ENTITY_DEAD(vehicle2, false))
 		}
 
 		inline void request_kosatka()
 		{
-			*scr_globals::freemode_global.at(992).as<int*>() = 1;
+			*scr_globals::freemode_global.at(613).as<int*>() = 1; // Look for if (Global_.*?.f_.*?) { BUNCH OF CODE BETWEEN if (!ENTITY::IS_ENTITY_DEAD(vehicle6, false))
 		}
 
 		inline void request_mobile_operations_center()
 		{
-			*scr_globals::freemode_global.at(957).as<int*>() = 1;
+			*scr_globals::freemode_global.at(577).as<int*>() = 1; // Look for if (Global_.*?.f_.*?) { BUNCH OF CODE BETWEEN if (!ENTITY::IS_ENTITY_DEAD(vehicle2, false))
 		}
 
 		inline void request_terrorbyte()
 		{
-			*scr_globals::freemode_global.at(970).as<int*>() = 1;
+			*scr_globals::freemode_global.at(591).as<int*>() = 1; // Look for if (Global_.*?.f_.*?) { BUNCH OF CODE BETWEEN if (!ENTITY::IS_ENTITY_DEAD(vehicle4, false))
 		}
 
 		inline void request_acidlab()
 		{
-			*scr_globals::freemode_global.at(971).as<int*>() = 1;
+			*scr_globals::freemode_global.at(592).as<int*>() = 1; // Look for if (Global_.*?.f_.*?) { BUNCH OF CODE BETWEEN if (!ENTITY::IS_ENTITY_DEAD(vehicle5, false))
 		}
 
 		inline void request_acidlab_bike()
 		{
-			*scr_globals::freemode_global.at(1026).as<int*>() = 1;
+			*scr_globals::freemode_global.at(647).as<int*>() = 1; // Look for if (Global_.*?.f_.*?) { BUNCH OF CODE BETWEEN if (!ENTITY::IS_ENTITY_DEAD(vehicle8, false))
 		}
 	}
 
@@ -155,7 +155,7 @@ namespace big::mobile
 
 		inline void summon_vehicle_by_index(int veh_idx)
 		{
-			if (*scr_globals::freemode_global.at(1017).as<int*>() != -1)
+			if (*scr_globals::freemode_global.at(638).as<int*>() != -1) // REGEX: NETWORK::NET_TO_VEH\(.*?\), Global_.*?.f_.*?, false, false, true, false, false, false, false, -1, 0, false\);
 			{
 				return g_notification_service.push_warning("VEHICLE"_T.data(), "VEHICLE_MECHANIC_BUSY"_T.data());
 			}
@@ -176,9 +176,9 @@ namespace big::mobile
 			{
 				*scr_globals::freemode_global.at(969).as<int*>() = 1; // disable vehicle node distance check
 			}
-			*scr_globals::freemode_global.at(955).as<int*>()  = 1; // tell freemode to spawn our vehicle
-			*scr_globals::freemode_global.at(1020).as<int*>() = 0; // required
-			*scr_globals::freemode_global.at(1017).as<int*>() = veh_idx;
+			*scr_globals::freemode_global.at(575).as<int*>() = 1; // tell freemode to spawn our vehicle | HOW TO FIND: https://imgur.com/8q2P1wB
+			*scr_globals::freemode_global.at(641).as<int*>() = 0; // required | REGEX: if \(BUILTIN::VDIST2\(.*?\) > 50f \* 50f && !Global_.*?.f_.*?\)
+			*scr_globals::freemode_global.at(638).as<int*>() = veh_idx; // REGEX: REGEX: NETWORK::NET_TO_VEH\(.*?\), Global_.*?.f_.*?, false, false, true, false, false, false, false, -1, 0, false\);
 
 			script::get_current()->yield(100ms);
 
@@ -193,7 +193,7 @@ namespace big::mobile
 			}
 
 			// blocking call till vehicle is delivered
-			notify::busy_spinner("Delivering vehicle...", scr_globals::freemode_global.at(1017).as<int*>(), -1);
+			notify::busy_spinner("Delivering vehicle...", scr_globals::freemode_global.at(638).as<int*>(), -1); // REGEX: REGEX: NETWORK::NET_TO_VEH\(.*?\), Global_.*?.f_.*?, false, false, true, false, false, false, false, -1, 0, false\);
 
 			if (g.clone_pv.spawn_inside)
 			{

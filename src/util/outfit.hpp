@@ -65,26 +65,26 @@ namespace big::outfit
 	// usually each update increases 1//
 	inline char* get_slot_name_address(int slot)
 	{
-		return scr_globals::stats.at(0, 5571).at(681).at(2463).at(slot, 8).as<char*>();
+		return scr_globals::stats.at(0, 5574).at(681).at(2466).at(slot, 8).as<char*>();
 	}
 
 	inline int* get_component_drawable_id_address(int slot, int id)
 	{
-		return scr_globals::stats.at(0, 5571).at(681).at(1339).at(slot, 13).at(id, 1).as<int*>();
+		return scr_globals::stats.at(0, 5574).at(681).at(1342).at(slot, 13).at(id, 1).as<int*>();
 	}
 
 	inline int* get_component_texture_id_address(int slot, int id)
 	{
-		return scr_globals::stats.at(0, 5571).at(681).at(1613).at(slot, 13).at(id, 1).as<int*>();
+		return scr_globals::stats.at(0, 5574).at(681).at(1616).at(slot, 13).at(id, 1).as<int*>();
 	}
 
 	inline int* get_prop_drawable_id_address(int slot, int id)
 	{
-		return scr_globals::stats.at(0, 5571).at(681).at(1887).at(slot, 10).at(id, 1).as<int*>();
+		return scr_globals::stats.at(0, 5574).at(681).at(1890).at(slot, 10).at(id, 1).as<int*>();
 	}
 
 	inline int* get_prop_texture_id_address(int slot, int id)
 	{
-		return scr_globals::stats.at(0, 5571).at(681).at(2098).at(slot, 10).at(id, 1).as<int*>();
+		return scr_globals::stats.at(0, 5574).at(681).at(2101).at(slot, 10).at(id, 1).as<int*>();
 	}
 }

@@ -10,7 +10,6 @@ namespace big::scr_globals
 
 	static inline const script_global globalplayer_bd(2658291);
 	static inline const script_global gpbd_fm_3(1892653);
-
 	static inline const script_global gpbd_fm_1(1845250);
 	static inline const script_global interiors(1950198);
 
@@ -43,7 +42,7 @@ namespace big::scr_globals
 	static inline const script_global session5(1575017);
 	static inline const script_global session6(2696922); // freemode -> if (NETWORK::NETWORK_IS_GAME_IN_PROGRESS() && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 
-	static inline const script_global interaction_menu_access(2711261); // am_pi_menu -> if (NETWORK::NETWORK_IS_SIGNED_ONLINE()) first global after that
+	static inline const script_global interaction_menu_access(2712075); // am_pi_menu -> if (NETWORK::NETWORK_IS_SIGNED_ONLINE()) first global after that
 
 	static inline const script_global disable_wasted_sound(2708893); // freemode -> AUDIO::PLAY_SOUND_FRONTEND(-1, "Wasted", "POWER_PLAY_General_Soundset", true);
 
@@ -65,35 +64,35 @@ namespace big::scr_locals
 {
 	namespace am_hunt_the_beast
 	{
-		constexpr static auto broadcast_idx        = 624;  // (bParam0) != 0;
-		constexpr static auto player_broadcast_idx = 2608; // if (NETWORK::PARTICIPANT_ID_TO_INT() != -1)
+		constexpr static auto broadcast_idx        = 626;  // (bParam0) != 0;
+		constexpr static auto player_broadcast_idx = 2610; // if (NETWORK::PARTICIPANT_ID_TO_INT() != -1)
 	}
 
 	namespace am_criminal_damage
 	{
-		constexpr static auto broadcast_idx = 119; // /* Tunable: CRIMINAL_DAMAGE_DISABLE_SHARE_CASH */)
-		constexpr static auto score_idx = 114; // AUDIO::PLAY_SOUND_FRONTEND(-1, "Criminal_Damage_High_Value", "GTAO_FM_Events_Soundset", false);
+		constexpr static auto broadcast_idx = 121; // /* Tunable: CRIMINAL_DAMAGE_DISABLE_SHARE_CASH */)
+		constexpr static auto score_idx = 116; // AUDIO::PLAY_SOUND_FRONTEND(-1, "Criminal_Damage_High_Value", "GTAO_FM_Events_Soundset", false);
 	}
 
 	namespace am_cp_collection
 	{
-		constexpr static auto broadcast_idx = 824; // bVar1 = NETWORK::NETWORK_GET_PLAYER_INDEX(PLAYER::INT_TO_PARTICIPANTINDEX(iVar0));
-		constexpr static auto player_broadcast_idx = 3465; // bVar1 = NETWORK::NETWORK_GET_PLAYER_INDEX(PLAYER::INT_TO_PARTICIPANTINDEX(iVar0));
+		constexpr static auto broadcast_idx = 826; // bVar1 = NETWORK::NETWORK_GET_PLAYER_INDEX(PLAYER::INT_TO_PARTICIPANTINDEX(iVar0));
+		constexpr static auto player_broadcast_idx = 3467; // bVar1 = NETWORK::NETWORK_GET_PLAYER_INDEX(PLAYER::INT_TO_PARTICIPANTINDEX(iVar0));
 	}
 
 	namespace am_king_of_the_castle
 	{
-		constexpr static auto broadcast_idx = 102; // KING_OF_THE_CASTLE_EVENT_TIME_LIMIT
+		constexpr static auto broadcast_idx = 104; // KING_OF_THE_CASTLE_EVENT_TIME_LIMIT
 	}
 
 	namespace fmmc_launcher
 	{
-		constexpr static auto broadcast_idx = 12827; // if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(PLAYER::INT_TO_PLAYERINDEX(Global_
+		constexpr static auto broadcast_idx = 12888; // if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(PLAYER::INT_TO_PLAYERINDEX(Global_
 	}
 
 	namespace fm_mission_controller
 	{
-		constexpr static auto mission_controller_wanted_state_flags = 60892; // if (PLAYER::GET_PLAYER_WANTED_LEVEL(bLocal_
+		constexpr static auto mission_controller_wanted_state_flags = 60898; // if (PLAYER::GET_PLAYER_WANTED_LEVEL(bLocal_
 	}
 
 	namespace freemode

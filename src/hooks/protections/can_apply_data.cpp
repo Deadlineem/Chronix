@@ -461,13 +461,14 @@ namespace big
 			LOG_FIELD_B(CTrainGameStateDataNode, m_direction);
 			LOG_FIELD_B(CTrainGameStateDataNode, m_has_passenger_carriages);
 			LOG_FIELD_B(CTrainGameStateDataNode, m_render_derailed);
-			LOG_FIELD_B(CTrainGameStateDataNode, unk_00C6);
 			LOG_FIELD_B(CTrainGameStateDataNode, unk_00C7);
+			LOG_FIELD_B(CTrainGameStateDataNode, new_00C8);
 			LOG_FIELD_NI(CTrainGameStateDataNode, m_engine_id);
 			LOG_FIELD_C(CTrainGameStateDataNode, m_train_config_index);
 			LOG_FIELD_C(CTrainGameStateDataNode, m_carriage_config_index);
 			LOG_FIELD_C(CTrainGameStateDataNode, m_track_id);
 			LOG_FIELD(CTrainGameStateDataNode, m_distance_from_engine);
+			LOG_FIELD(CTrainGameStateDataNode, new_00D4);
 			LOG_FIELD(CTrainGameStateDataNode, m_cruise_speed);
 			LOG_FIELD_NI(CTrainGameStateDataNode, m_linked_to_backward_id);
 			LOG_FIELD_NI(CTrainGameStateDataNode, m_linked_to_forward_id);

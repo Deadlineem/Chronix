@@ -17,8 +17,8 @@ namespace big
 		g_script_patcher_service->add_patch({"freemode"_J, "disable population load balancing", "2D 00 07 00 00 7B", 5, {0x2E, 0x00, 0x00}, nullptr}); // disable population load balancing
 		g_script_patcher_service->add_patch(
 		    {"freemode"_J, "freemode7", "2D 02 08 00 00 38 01 56", 5, {0x2E, 0x02, 0x00}, &g.session.block_muggers});
-		//g_script_patcher_service->add_patch(
-		//    {"freemode"_J, "freemode8", "2D 00 CF 00 00", 5, {0x2E, 0x00, 0x00}, &g.session.block_ceo_raids}); // doesn't work
+		g_script_patcher_service->add_patch(
+		    {"freemode"_J, "freemode8", "2D 00 D0 00 00 5D", 5, {0x2E, 0x00, 0x00}, &g.session.block_ceo_raids}); // doesn't work
 		g_script_patcher_service->add_patch(
 		    {"freemode"_J, "prevent normal blip update", "06 56 ? ? 38 02 2C ? ? ? 71 71", 0, {0x2B, 0x55}, &g.spoofing.spoof_blip}); // prevent normal blip update
 		g_script_patcher_service->add_patch({"freemode"_J,

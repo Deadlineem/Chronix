@@ -30,7 +30,7 @@ namespace big::mobile
 	{
 		inline void request_ammo_drop()
 		{
-			*scr_globals::freemode_global.at(548).as<int*>() = 1; // REGEX: if \(Global_.*?.f_.*?\)\n.*?\{\n.*?if \(!NETWORK::NETWORK_IS_SCRIPT_ACTIVE\("AM_AMMO_DROP", PLAYER::PLAYER_ID\(\), true, 0\)\)
+			*scr_globals::freemode_global.at(538).as<int*>() = 1; // REGEX: if \(Global_.*?.f_.*?\)\n.*?\{\n.*?if \(!NETWORK::NETWORK_IS_SCRIPT_ACTIVE\("AM_AMMO_DROP", PLAYER::PLAYER_ID\(\), true, 0\)\)
 		}
 
 		inline void request_boat_pickup()
@@ -106,7 +106,7 @@ namespace big::mobile
 	{
 		inline void request_avenger()
 		{
-			*scr_globals::freemode_global.at(594).as<int*>() = 1; // Look for if (IS_BIT_SET(Global_.*?.f_.*?, 1)) { BUNCH OF CODE BETWEEN if (!ENTITY::IS_ENTITY_DEAD(vehicle2, false))
+			*scr_globals::freemode_global.at(585).as<int*>() = 1; // Look for if (IS_BIT_SET(Global_.*?.f_.*?, 1)) { BUNCH OF CODE BETWEEN if (!ENTITY::IS_ENTITY_DEAD(vehicle2, false))
 		}
 
 		inline void request_kosatka()
@@ -174,7 +174,7 @@ namespace big::mobile
 			// only do this when spawn inside is enabled otherwise the vehicle will spawn relatively far away from players
 			if (g.clone_pv.spawn_inside)
 			{
-				*scr_globals::freemode_global.at(969).as<int*>() = 1; // disable vehicle node distance check
+				*scr_globals::freemode_global.at(590).as<int*>() = 1; // disable vehicle node distance check
 			}
 			*scr_globals::freemode_global.at(575).as<int*>() = 1; // tell freemode to spawn our vehicle | HOW TO FIND: https://imgur.com/8q2P1wB
 			*scr_globals::freemode_global.at(641).as<int*>() = 0; // required | REGEX: if \(BUILTIN::VDIST2\(.*?\) > 50f \* 50f && !Global_.*?.f_.*?\)
@@ -206,7 +206,7 @@ namespace big::mobile
 	{
 		inline void request_taxi()
 		{
-			*scr_globals::freemode_global.at(880).as<int*>() = 1;
+			*scr_globals::freemode_global.at(509).as<int*>() = 1;
 		}
 
 		inline void request_gun_van()

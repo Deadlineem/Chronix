@@ -68,8 +68,8 @@ namespace big::session
 	{
 		int idx = index / 32;
 		int bit = index % 32;
-		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(397).at(idx, 1).as<int*>(), bit);
-		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(387).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(402).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(392).at(idx, 1).as<int*>(), bit);
 		misc::set_bit((int*)&scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.ActiveFreemodeEvents[idx], bit);
 	}
 
@@ -77,8 +77,8 @@ namespace big::session
 	{
 		int idx = index / 32;
 		int bit = index % 32;
-		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(397).at(idx, 1).as<int*>(), bit);
-		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(387).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(402).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(392).at(idx, 1).as<int*>(), bit);
 		misc::clear_bit((int*)&scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.ActiveFreemodeEvents[idx], bit);
 	}
 

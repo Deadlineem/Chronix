@@ -10,7 +10,8 @@ A mod menu base for Grand Theft Auto V.
 > While we do that, here are instructions on what to do, to be able to play online 😊
 >
 > - After launching your game, while still in main menu, inject Chronix and head into Singleplayer.
-> - Once you're in Singleplayer, open Chronix then head to Network tab and click on New Public Session, this will let you play "public" solo session which won't get any players.
+> - Once you're in Singleplayer, open Chronix then head to Network tab and click on New Public Session, this will let you play "public" solo session.
+> - We also advise to enable Lobby lock, to disallow any other mod menu user from joining which can cause crashes.
 > <img width="732" height="351" alt="image" src="https://github.com/user-attachments/assets/d46ec54c-bf75-4e58-ac49-0241000ceeed" />
 >
 

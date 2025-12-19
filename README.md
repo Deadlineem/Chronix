@@ -4,17 +4,6 @@ A mod menu base for Grand Theft Auto V.
 ![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Online%20Version&query=%24.game.online&url=https%3A%2F%2Fbedrock.root.sx%2Fgitapi.php&style=flat-square&labelColor=000000)
 ![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Game%20Build&query=%24.game.build&url=https%3A%2F%2Fbedrock.root.sx%2Fgitapi.php&style=flat-square&labelColor=000000)
 
-> [!Important]
-> **We are aware of Chronix crashing while trying to join online sessions, and effectively working on a fix.**
-> 
-> While we do that, here are instructions on what to do, to be able to play online 😊
->
-> - After launching your game, while still in main menu, inject Chronix and head into Singleplayer.
-> - Once you're in Singleplayer, open Chronix then head to Network tab and click on New Public Session, this will let you play "public" solo session.
-> - We also advise to enable Lobby lock, to disallow any other mod menu user from joining which can cause crashes.
-> <img width="732" height="351" alt="image" src="https://github.com/user-attachments/assets/d46ec54c-bf75-4e58-ac49-0241000ceeed" />
->
-
 ## STRICTLY FOR EDUCATIONAL PURPOSES
 
 Chronix is originally based of off YimMenu which is based off of [BigBaseV2](https://github.com/Pocakking/BigBaseV2).  BigBaseV2 was an amazing base at the time but nowadays is a bit dated.

@@ -1,8 +1,8 @@
 # Chronix
 A mod menu base for Grand Theft Auto V.
 
-![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Online%20Version&query=%24.game.online&url=https%3A%2F%2Fbedrock.root.sx%2Fgitapi.php&style=flat-square&labelColor=000000)
-![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Game%20Build&query=%24.game.build&url=https%3A%2F%2Fbedrock.root.sx%2Fgitapi.php&style=flat-square&labelColor=000000)
+![](https://img.shields.io/badge/Online%20Version-1.72-green?style=flat-square&logo=rockstargames)
+![](https://img.shields.io/badge/Game%20build-3725-green?style=flat-square&logo=rockstargames)
 
 ## STRICTLY FOR EDUCATIONAL PURPOSES
 

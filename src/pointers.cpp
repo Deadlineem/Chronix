@@ -3,7 +3,7 @@
 #include "gta_pointers_layout_info.hpp"
 #include "sc_pointers_layout_info.hpp"
 
-#define GTA_VERSION_TARGET "1.72-3725.0"
+#define GTA_VERSION_TARGET "1.72-3788.0"
 
 namespace big
 {
@@ -61,10 +61,10 @@ namespace big
         // Game State
         {
             "GS",
-            "83 3D ? ? ? ? ? 75 17 8B 43 20 25",
+            "81 39 5D 6D FF AF 75 20",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_game_state = ptr.add(2).rip().add(1).as<eGameState*>();
+                g_pointers->m_gta.m_game_state = ptr.add(10).rip().add(1).as<eGameState*>();
             }
         },
         // Is Session Started
@@ -316,7 +316,7 @@ namespace big
         // Handle To Ptr
         {
             "GSH",
-            "83 F9 FF 74 31 4C 8B 0D",
+            "83 F9 FF 74 37 8B D1",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_handle_to_ptr = ptr.as<decltype(gta_pointers::m_handle_to_ptr)>();
@@ -636,7 +636,7 @@ namespace big
                 g_pointers->m_gta.m_script_vm = ptr.add(1).rip().as<functions::script_vm>();
             }
         },
-        // Handle Join Request (partially obfuscated now, crutches deployed)
+        // Handle Join Request
         {
             "HJR",
             "48 81 EC E8 03 00 00 4C 8B F1",
@@ -1535,10 +1535,10 @@ namespace big
         // Blip List
         {
             "BLPLST",
-            "4C 8D 05 ? ? ? ? 0F B7 C1",
+            "4D 8B 04 C0 4D 85 C0 74 0A",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_blip_list = ptr.add(3).rip().as<CBlipList*>();
+                g_pointers->m_gta.m_blip_list = ptr.sub(4).rip().as<CBlipList*>();
             }
         },
         // TimecycleKeyframeData
@@ -1987,7 +1987,7 @@ namespace big
         // Update instructions: Scan 48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 40 41 8B E9 and xref it to get to the vtable. Xref the vtable and generate a new signature
         {
             "PD",
-            "48 8D 05 ? ? ? ? 48 8B F9 48 89 01 48 83 C1 08 E8 ? ? ? ? 33 C0",
+            "48 8D 05 ? ? ? ? 48 8B F9 48 89 01 48 83 C1 08 E8",
             [](memory::handle ptr)
             {
                 auto presence_data_vft             = ptr.add(3).rip().as<PVOID*>();

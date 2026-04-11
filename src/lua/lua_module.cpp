@@ -1,4 +1,4 @@
-#include "lua_module.hpp"
+﻿#include "lua_module.hpp"
 
 #include "bindings/command.hpp"
 #include "bindings/entities.hpp"
@@ -23,9 +23,6 @@
 #include "bindings/weapons.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
-
-#include <regex>
-#include <string>
 
 namespace big
 {
@@ -87,11 +84,11 @@ namespace big
 	}
 
 	lua_module::lua_module(const std::filesystem::path& module_path, folder& scripts_folder, bool disabled) :
-	    m_state(),
-	    m_module_path(module_path),
-	    m_module_name(module_path.filename().string()),
-	    m_module_id(rage::joaat(m_module_name)),
-	    m_disabled(disabled)
+		m_state(),
+		m_module_path(module_path),
+		m_module_name(module_path.filename().string()),
+		m_module_id(rage::joaat(m_module_name)),
+		m_disabled(disabled)
 	{
 		if (!m_disabled)
 		{
@@ -166,6 +163,15 @@ namespace big
 		return m_disabled;
 	}
 
+	const std::filesystem::path lua_module::get_config_folder() const
+	{
+		const auto config_path = g_lua_manager->get_scripts_config_folder().get_path() / m_module_name;
+		if (!std::filesystem::exists(config_path))
+			std::filesystem::create_directory(config_path);
+
+		return config_path;
+	}
+
 	void lua_module::set_folder_for_lua_require(folder& scripts_folder)
 	{
 		std::string scripts_search_path = scripts_folder.get_path().string() + "/?.lua;";
@@ -173,6 +179,9 @@ namespace big
 		for (const auto& entry : std::filesystem::recursive_directory_iterator(scripts_folder.get_path(), std::filesystem::directory_options::skip_permission_denied))
 		{
 			if (!entry.is_directory())
+				continue;
+
+			if (std::filesystem::relative(entry, scripts_folder.get_path()).wstring().contains(L"disabled"))
 				continue;
 
 			scripts_search_path += entry.path().string() + "/?.lua;";
@@ -183,115 +192,66 @@ namespace big
 		m_state["package"]["path"] = scripts_search_path;
 	}
 
+	static std::optional<std::filesystem::path> make_absolute(const std::filesystem::path& root, const std::filesystem::path& user_path)
+	{
+		if (user_path.is_absolute())
+			return std::nullopt;
+
+		auto canon_root          = std::filesystem::weakly_canonical(root);
+		auto final_path          = std::filesystem::weakly_canonical(canon_root / user_path);
+		auto [root_end, nothing] = std::mismatch(canon_root.begin(), canon_root.end(), final_path.begin());
+
+		if (root_end != canon_root.end())
+			return std::nullopt;
+
+		return final_path;
+	};
+
 	void lua_module::sandbox_lua_os_library()
 	{
 		const auto& os = m_state["os"];
 		sol::table sandbox_os(m_state, sol::create);
 
-		// Safe functions
 		sandbox_os["clock"]    = os["clock"];
 		sandbox_os["date"]     = os["date"];
 		sandbox_os["difftime"] = os["difftime"];
 		sandbox_os["time"]     = os["time"];
+		
+		// Lua API: Function
+		// Table: os
+		// Name: rename
+		// Param: oldname: string
+		// Param: newname: string
+		// Returns: boolean, string?: True if the file was successfully renamed, false and an error message otherwise.
+		sandbox_os["rename"]   = [this](const std::string& oldname, const std::string& newname) -> sol::object {
+			const auto old_path = make_absolute(get_config_folder(), oldname);
+			const auto new_path = make_absolute(get_config_folder(), newname);
 
-		// use os.execute to run std::filesystem & sanitization for updating lua scripts
-		sandbox_os["execute"] = [](const std::string& url) -> int {
-			const std::string allowed_extension = ".lua";
-
-			// Helper: Check if a string is a valid URL
-			auto isValidUrl = [](const std::string& url) -> bool {
-				const std::regex url_regex(R"(https://[a-zA-Z0-9\-._~:/?#@!$&'()*+,;=%]+)");
-				return std::regex_match(url, url_regex);
-			};
-
-			// Validate the URL format
-			if (!isValidUrl(url))
+			if (!old_path)
 			{
-				LOG(FATAL) << "failed to execute: Invalid or non-HTTPS URL format.";
-				return -1;
+				LOG(WARNING) << "os.rename is restricted to the script's config folder, and the filename provided (" << oldname << ") seems to be outside of it.";
+				return sol::make_object(m_state, std::make_tuple(false, "File not found."));
 			}
 
-			// Extract the file name from the URL
-			size_t last_slash = url.find_last_of('/');
-			if (last_slash == std::string::npos)
+			if (!new_path)
 			{
-				LOG(FATAL) << "failed to execute: Malformed URL.";
-				return -1;
-			}
-			std::string file_name = url.substr(last_slash + 1);
-
-			// Validate the file extension
-			size_t last_dot = file_name.find_last_of('.');
-			if (last_dot == std::string::npos || file_name.substr(last_dot) != allowed_extension)
-			{
-				LOG(FATAL) << "failed to execute: Only .lua files are allowed.";
-				return -1;
+				LOG(WARNING) << "os.rename is restricted to the script's config folder, and the filename provided (" << newname << ") seems to be outside of it.";
+				return sol::make_object(m_state, std::make_tuple(false, "New file name is invalid."));
 			}
 
-			// Ensure the file name does not contain dangerous characters or sequences
-			if (file_name.find("..") != std::string::npos || file_name.find('/') != std::string::npos || file_name.find('\\') != std::string::npos)
+			try
 			{
-				LOG(FATAL) << "failed to execute: Invalid characters in file name.";
-				return -1;
+				std::filesystem::rename(old_path.value(), new_path.value());
+				return sol::make_object(m_state, true);
 			}
-
-			// Get the APPDATA directory from the environment variable
-			char* appdata = std::getenv("APPDATA");
-			if (!appdata)
+			catch (const std::exception& e)
 			{
-				LOG(FATAL) << "failed to execute: APPDATA environment variable not set.";
-				return -1;
+				return sol::make_object(m_state, std::make_tuple(false, e.what()));
 			}
-
-			// Construct the secure directory path
-			std::string secure_directory = std::string(appdata) + "\\Chronix\\scripts";
-			if (!std::filesystem::exists(secure_directory))
-			{
-				std::filesystem::create_directories(secure_directory);
-			}
-
-			// Construct the full file path in the secure directory
-			std::filesystem::path file_path = std::filesystem::path(secure_directory) / file_name;
-
-			// Prevent directory traversal by checking canonical paths
-			std::filesystem::path canonical_file_path  = std::filesystem::weakly_canonical(file_path);
-			std::filesystem::path canonical_secure_dir = std::filesystem::weakly_canonical(secure_directory);
-			if (canonical_file_path.string().find(canonical_secure_dir.string()) != 0)
-			{
-				LOG(FATAL) << "failed to execute: Path traversal detected.";
-				return -1;
-			}
-
-			// Use native file download APIs or a safe shell command
-			std::string command = "curl --fail --silent --show-error -o \"" + canonical_file_path.string() + "\" \"" + url + "\"";
-
-			// Execute the command in a controlled manner
-			int result = std::system(command.c_str());
-			if (result != 0)
-			{
-				LOG(FATAL) << "failed to execute: Command failed with error code " << result;
-				return result;
-			}
-
-			LOG(INFO) << "Successfully updated script " << canonical_file_path.string();
-			return 0;
 		};
 
-		// Replace the original os library with the sandboxed version
 		m_state["os"] = sandbox_os;
 	}
-
-	static std::optional<std::filesystem::path> make_absolute(const std::filesystem::path& root, const std::filesystem::path& user_path)
-	{
-		auto final_path = std::filesystem::weakly_canonical(root / user_path);
-
-		auto [root_end, nothing] = std::mismatch(root.begin(), root.end(), final_path.begin());
-
-		if (root_end != root.end())
-			return std::nullopt;
-
-		return final_path;
-	};
 
 	void lua_module::sandbox_lua_io_library()
 	{
@@ -309,7 +269,7 @@ namespace big
 		// Name: open
 		// Returns: file_handle: file handle or nil if can't read / write to the given path.
 		sandbox_io["open"] = [this](const std::string& filename, const std::string& mode) {
-			const auto scripts_config_sub_path = make_absolute(g_lua_manager->get_scripts_config_folder().get_path(), filename);
+			const auto scripts_config_sub_path = make_absolute(get_config_folder(), filename);
 			if (!scripts_config_sub_path)
 			{
 				LOG(WARNING) << "io.open is restricted to the scripts_config folder, and the filename provided (" << filename << ") is outside of it.";
@@ -330,9 +290,10 @@ namespace big
 		// Lua API: Function
 		// Table: io
 		// Name: exists
+		// Param: filename: string
 		// Returns: boolean: True if the passed file path exists
-		sandbox_io["exists"] = [](const std::string& filename) -> bool {
-			const auto scripts_config_sub_path = make_absolute(g_lua_manager->get_scripts_config_folder().get_path(), filename);
+		sandbox_io["exists"] = [this](const std::string& filename) -> bool {
+			const auto scripts_config_sub_path = make_absolute(get_config_folder(), filename);
 			if (!scripts_config_sub_path)
 			{
 				LOG(WARNING) << "io.open is restricted to the scripts_config folder, and the filename provided (" << filename << ") is outside of it.";

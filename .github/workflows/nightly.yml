@@ -25,7 +25,7 @@ jobs:
       - id: should_run
         name: Check if latest commit date is within the previous 24 hours
         run: |
-          if [ -z "$(git rev-list --since="24 hours ago" --all)" ]; then
+          if [ -z "$(git rev-list --all)" ]; then
             echo "should_run=false" >> $GITHUB_OUTPUT
           else
             echo "should_run=true" >> $GITHUB_OUTPUT

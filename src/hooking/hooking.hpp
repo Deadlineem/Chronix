@@ -1,9 +1,9 @@
 #pragma once
 #include "MinHook.h"
-#include "call_hook.hpp"
 #include "detour_hook.hpp"
 #include "vmt_hook.hpp"
 #include "vtable_hook.hpp"
+#include "call_hook.hpp"
 
 #include <gta/enums.hpp>
 #include <network/netConnection.hpp> // cannot stub this
@@ -138,7 +138,7 @@ namespace big
 		static int nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len);
 		static int queue_dependency(void* a1, int a2, int64_t dependency);
 
-		static bool prepare_metric_for_sending(rage::json_serializer* bit_buffer, int unk, int time, rage::rlMetric* metric);
+		static bool prepare_metric_for_sending(rage::json_serializer* bit_buffer, bool* failed, char* unk, uint64_t time, rage::rlMetric* metric);
 		static bool http_start_request(void* request, const char* uri);
 
 		static bool received_array_update(rage::netArrayHandlerBase* array, CNetGamePlayer* sender, rage::datBitBuffer* buffer, int size, int16_t cycle);
@@ -207,7 +207,7 @@ namespace big
 		static bool update_session_advertisement(int profile_index, MatchmakingId* id, int num_slots, int available_slots, rage::rlSessionInfo* info, MatchmakingAttributes* data, rage::rlTaskStatus* status);
 		static bool unadvertise_session(int profile_index, MatchmakingId* id, rage::rlTaskStatus* status);
 		static void send_session_detail_msg(rage::netConnectionManager* mgr, rage::netConnection::InFrame* request_frame, rage::rlSessionDetailMsg* msg);
-		static void download_lua_script_bundle();
+
 		static std::uint32_t get_dlc_hash(void* mgr, std::uint32_t seed);
 
 		static void* create_pool_item(GenericPool* pool);

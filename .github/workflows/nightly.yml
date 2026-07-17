@@ -1,8 +1,5 @@
 name: Nightly Build
 
-permissions:
-  contents: write
-
 on:
   schedule:
     # cronjob that triggers every day at 2PM UTC
@@ -25,14 +22,14 @@ jobs:
       - id: should_run
         name: Check if latest commit date is within the previous 24 hours
         run: |
-          if [ -z "$(git rev-list --all)" ]; then
+          if [ -z "$(git rev-list --since="24 hours ago" --all)" ]; then
             echo "should_run=false" >> $GITHUB_OUTPUT
           else
             echo "should_run=true" >> $GITHUB_OUTPUT
           fi
 
   build_nightly:
-    runs-on: windows-latest
+    runs-on: windows-2022
     name: Build Nightly
     needs: check_recent_commit
     if: needs.check_recent_commit.outputs.should_run == 'true'
@@ -43,17 +40,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-          fetch-depth: 1  # Minimize the git history fetched, to speed up checkout
-
-      - name: Cache CMake dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/CMake
-            ./build
-          key: ${{ runner.os }}-cmake-${{ hashFiles('**/CMakeLists.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-cmake-
 
       - name: Check CMake version
         run: cmake --version
@@ -63,29 +49,19 @@ jobs:
         with:
           arch: amd64
 
-      - name: Install ccache (for faster builds)
-        run: |
-          choco install ccache
-        shell: pwsh
-
       - name: Generate CMake project
-        run: cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo -D OPTIMIZE=YES -S. -Bbuild -G Ninja
+        run: cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo -D OPTIMIZE=YES -D CMAKE_POLICY_VERSION_MINIMUM=3.5 -S. -Bbuild -G Ninja
 
-      - name: Build 64bit release DLL (using Ninja directly)
-        run: |
-          # Fetch the number of processors dynamically
-          $processors = (Get-WmiObject -Class Win32_ComputerSystem).NumberOfLogicalProcessors
-          echo "Number of processors: $processors"
-          ninja -C ./build -j4
-        shell: pwsh
+      - name: Build 64bit release DLL
+        run: cmake --build ./build --config RelWithDebInfo --target YimMenu --
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: binary
           path: |
-            build/Chronix.dll
-            build/Chronix.pdb
+            build/YimMenu.dll
+            build/YimMenu.pdb
 
       - name: Generate Build Info
         id: var
@@ -109,15 +85,15 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const tag = "nightly";
-
+      
             // List all releases and find the release by tag
             const releases = await github.rest.repos.listReleases({
               owner: owner,
               repo: repo,
             });
-
+      
             const release = releases.data.find(release => release.tag_name === tag);
-
+      
             // Check if the release exists and delete it
             if (release) {
               await github.rest.repos.deleteRelease({
@@ -129,7 +105,7 @@ jobs:
             } else {
               console.log("No existing release to delete");
             }
-
+      
             // Delete the tag
             try {
               await github.rest.git.deleteRef({
@@ -150,7 +126,7 @@ jobs:
       - name: Echo build sha256
         id: build_sha
         run: |
-          sha256sum Chronix.dll > sha256.checksum
+          sha256sum YimMenu.dll > sha256.checksum
           echo "build_sha=$(cat sha256.checksum)" >> $GITHUB_OUTPUT
           cat sha256.checksum
 
@@ -168,11 +144,14 @@ jobs:
             ${{ steps.build_sha.outputs.build_sha }}
             ```
             To verify the build SHA256 during the action, click the build link, go-to "Create Release", open the Echo build sha256 step and read the sha256.
+
             You can download the build artifacts, generate a SHA256 checksum and compare it with the below binary.
             Build artifacts ARE NOT automatically the same as release assets since release assets can be modified afterwards.
+
             These are nightly builds of YimMenu, they are provided for testing purposes only:
             - Test if your build environment produces a broken YimMenu.dll
             - Test if source code is out of date and no longer compatible with the current version of GTA V
+
             If you wish to use this menu as-is you are on your own, no warranty is provided.
 
             Full Commit Hash:
@@ -180,4 +159,4 @@ jobs:
             ${{ needs.build_nightly.outputs.full_sha }}
             ```
           files: |
-            Chronix.dll
+            YimMenu.dll

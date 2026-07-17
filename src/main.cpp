@@ -135,11 +135,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    std::this_thread::sleep_for(100ms);
 
 			    std::filesystem::path base_dir = std::getenv("appdata");
-			    base_dir /= "YimMenu";
+			    base_dir /= "Chronix";
 			    g_file_manager.init(base_dir);
 
 			    g.init(g_file_manager.get_project_file("./settings.json"));
-			    g_log.initialize("YimMenu", g_file_manager.get_project_file("./cout.log"), g.debug.external_console);
+			    g_log.initialize("Chronix", g_file_manager.get_project_file("./cout.log"), g.debug.external_console);
 			    LOG(INFO) << "Settings Loaded and logger initialized.";
 
 			    LOG(INFO) << "Yim's Menu Initializing";
@@ -182,7 +182,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				}
 				else
 				{
-				    LOGF(FATAL, "YimMenu requires FSL to be loaded. Please get it from UnknownCheats.me");
+				    LOGF(FATAL, "Chronix requires FSL to be loaded. Please get it from UnknownCheats.me");
 				}
 
 			    auto byte_patch_manager_instance = std::make_unique<byte_patch_manager>();

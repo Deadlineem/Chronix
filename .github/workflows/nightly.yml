@@ -60,8 +60,8 @@ jobs:
         with:
           name: binary
           path: |
-            build/YimMenu.dll
-            build/YimMenu.pdb
+            build/Chronix.dll
+            build/Chronix.pdb
 
       - name: Generate Build Info
         id: var
@@ -159,4 +159,4 @@ jobs:
             ${{ needs.build_nightly.outputs.full_sha }}
             ```
           files: |
-            YimMenu.dll
+            Chronix.dll

@@ -3,7 +3,7 @@
 #include "gta_pointers_layout_info.hpp"
 #include "sc_pointers_layout_info.hpp"
 
-#define GTA_VERSION_TARGET "1.72-3788.0"
+#define GTA_VERSION_TARGET "1.73-3889.0"
 
 namespace big
 {
@@ -639,7 +639,7 @@ namespace big
         // Handle Join Request
         {
             "HJR",
-            "48 81 EC E8 03 00 00 4C 8B F1",
+            "48 81 EC 88 03 00 00 4C 8B F1",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_handle_join_request = ptr.sub(0x26).as<PVOID>();
@@ -648,10 +648,10 @@ namespace big
         // Write Join Response Data
         {
             "WJRD",
-            "E8 ? ? ? ? 84 C0 75 0A 44 89 23",
+            "48 83 C2 34 4C 8B CB",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
+                g_pointers->m_gta.m_write_join_response_data = ptr.add(8).rip().as<functions::write_join_response_data>();
             }
         },
         // Queue Packet
@@ -693,10 +693,10 @@ namespace big
         // Serialize Join Request Message 2
         {
             "SJRM2",
-            "E8 ? ? ? ? 48 8D 8D E0 01 00 00 8A D8",
+            "48 8D 8D ? ? ? ? 8A D8 E8 ? ? ? ? 48 8D 4D",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_serialize_join_request_message_2 = ptr.add(1).rip().as<PVOID>();
+                g_pointers->m_gta.m_serialize_join_request_message_2 = ptr.sub(4).rip().as<PVOID>();
             }
         },
         // Send Network Damage
@@ -927,7 +927,7 @@ namespace big
         // Prepare Metric For Sending
         {
             "PMFS",
-            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 30 49 8B F0 4C",
+            "48 89 5C 24 08 48 89 6C 24 18 56 57 41 56 48 83 EC 20 4D 8B F1 49 8B D8",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_prepare_metric_for_sending = ptr.as<PVOID>();
@@ -1762,10 +1762,10 @@ namespace big
         // Session Request Patch
         {
             "SRP",
-            "41 38 9E 98 B7 00 00 0F 85 6A FE FF FF",
+            "83 F8 01 0F 97 44 24",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_session_request_patch = ptr.add(0x14).as<PVOID>();
+                g_pointers->m_gta.m_session_request_patch = ptr.add(8).as<PVOID>();
             }
         },
         // Get Peer By Security Id
@@ -1956,10 +1956,10 @@ namespace big
         // Anticheat Context
         {
             "AC",
-            "69 C9 FD 43 03 00 8B D0",
+            "89 42 48 89 4A 4C 48 8B 1D",
             [](memory::handle ptr)
             {
-               g_pointers->m_gta.m_anticheat_context = ptr.sub(4).rip().as<CAnticheatContext**>();
+               g_pointers->m_gta.m_anticheat_context = ptr.add(9).rip().as<CAnticheatContext**>();
             }
         },
         // Game Skeleton Update
@@ -1969,6 +1969,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_game_skeleton_update = ptr.as<PVOID>();
+            }
+        },
+        // Script VM On Enter End
+        {
+            "SVMOEE",
+            "E9 ? ? ? ? 44 0F B6 4F ? 44 0F B6 47",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_script_vm_on_enter_end = ptr.as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end

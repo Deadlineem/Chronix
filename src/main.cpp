@@ -30,9 +30,12 @@
 #include "services/vehicle/handling_service.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
 #include "services/xml_maps/xml_map_service.hpp"
+#include "services/script_function_hook/script_function_hook_service.hpp"
 #include "thread_pool.hpp"
 #include "util/is_proton.hpp"
 #include "version.hpp"
+
+#include <Psapi.h>
 
 namespace big
 {
@@ -89,6 +92,29 @@ namespace big
 		GlobalFree(UTF16);
 		return UTF8;
 	}
+
+	HMODULE CheckForFSL()
+	{
+		HMODULE modules[1024];
+		DWORD needed;
+
+		if (!EnumProcessModules(GetCurrentProcess(), modules, sizeof(modules), &needed))
+		{
+			return nullptr;
+		}
+
+		size_t count = needed / sizeof(HMODULE);
+
+		for (size_t i = 0; i < count; ++i)
+		{
+			if (GetProcAddress(modules[i], "LawnchairGetVersion"))
+			{
+				return modules[i];
+			}
+		}
+
+		return nullptr;
+	}
 }
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
@@ -106,19 +132,17 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
 
 			    while (!FindWindow("grcWindow", nullptr))
-			    {
 				    std::this_thread::sleep_for(100ms);
-			    }
 
 			    std::filesystem::path base_dir = std::getenv("appdata");
-			    base_dir /= "Chronix";
+			    base_dir /= "YimMenu";
 			    g_file_manager.init(base_dir);
 
 			    g.init(g_file_manager.get_project_file("./settings.json"));
-			    g_log.initialize("Chronix", g_file_manager.get_project_file("./cout.log"), g.debug.external_console);
+			    g_log.initialize("YimMenu", g_file_manager.get_project_file("./cout.log"), g.debug.external_console);
 			    LOG(INFO) << "Settings Loaded and logger initialized.";
 
-			    LOG(INFO) << "Chronix Initializing";
+			    LOG(INFO) << "Yim's Menu Initializing";
 			    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
 
 			    // more tech debt, YAY!
@@ -147,12 +171,19 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    if (!*g_pointers->m_gta.m_anticheat_initialized_hash)
 			    {
 				    *g_pointers->m_gta.m_anticheat_initialized_hash = new rage::Obf32; // this doesn't get freed so we don't have to use the game allocator
-				    (*g_pointers->m_gta.m_anticheat_initialized_hash)->setData(0x124EA49D);
 			    }
-			    else
-			    {
-				    (*g_pointers->m_gta.m_anticheat_initialized_hash)->setData(0x124EA49D);
-			    }
+				(*g_pointers->m_gta.m_anticheat_initialized_hash)->setData(0x124EA49D);
+
+				if (HMODULE FSL = CheckForFSL())
+				{
+				    LOGF(INFO, "FSL Version: {}", reinterpret_cast<int (*)()>(GetProcAddress(FSL, "LawnchairGetVersion"))());
+				    LOGF(INFO, "FSL Local Saves: {}", reinterpret_cast<bool (*)()>(GetProcAddress(FSL, "LawnchairIsProvidingLocalSaves"))() ? "Enabled" : "Disabled");
+				    LOGF(INFO, "FSL BE Bypass: {}", reinterpret_cast<bool (*)()>(GetProcAddress(FSL, "LawnchairIsProvidingBattlEyeBypass"))() ? "Enabled" : "Disabled");
+				}
+				else
+				{
+				    LOGF(FATAL, "YimMenu requires FSL to be loaded. Please get it from UnknownCheats.me");
+				}
 
 			    auto byte_patch_manager_instance = std::make_unique<byte_patch_manager>();
 			    LOG(INFO) << "Byte Patch Manager initialized.";
@@ -192,6 +223,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto script_connection_service_instance = std::make_unique<script_connection_service>();
 			    auto xml_vehicles_service_instance      = std::make_unique<xml_vehicles_service>();
 			    auto xml_maps_service_instance          = std::make_unique<xml_map_service>();
+			    auto script_function_hook_service_instance = std::make_unique<script_function_hook_service>();
 			    LOG(INFO) << "Registered service instances...";
 
 			    g_notification_service.initialise();
@@ -285,6 +317,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Context Service reset.";
 			    xml_vehicles_service_instance.reset();
 			    LOG(INFO) << "Xml Vehicles Service reset.";
+			    script_function_hook_service_instance.reset();
+			    LOG(INFO) << "Script Function Hook Service reset.";
 			    LOG(INFO) << "Services uninitialized.";
 
 			    hooking_instance.reset();

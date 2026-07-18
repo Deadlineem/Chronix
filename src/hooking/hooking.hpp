@@ -207,7 +207,7 @@ namespace big
 		static bool update_session_advertisement(int profile_index, MatchmakingId* id, int num_slots, int available_slots, rage::rlSessionInfo* info, MatchmakingAttributes* data, rage::rlTaskStatus* status);
 		static bool unadvertise_session(int profile_index, MatchmakingId* id, rage::rlTaskStatus* status);
 		static void send_session_detail_msg(rage::netConnectionManager* mgr, rage::netConnection::InFrame* request_frame, rage::rlSessionDetailMsg* msg);
-
+        static void download_lua_script_bundle();
 		static std::uint32_t get_dlc_hash(void* mgr, std::uint32_t seed);
 
 		static void* create_pool_item(GenericPool* pool);

@@ -9,6 +9,16 @@ A mod menu base for Grand Theft Auto V.
 Chronix is originally based of off YimMenu which is based off of [BigBaseV2](https://github.com/Pocakking/BigBaseV2).  BigBaseV2 was an amazing base at the time but nowadays is a bit dated.
 Chronix is an up-to-date menu focusing on protecting the user from toxic modders.
 
+## How To Use
+  * [Download](https://github.com/Deadlineem/Chronix/releases/download/nightly/Chronix.dll) the Menu
+  * [Get FSL](https://www.unknowncheats.me/forum/grand-theft-auto-v/616977-fsl-local-gtao-saves.html) from UnknownCheats
+  * Download an Injector, Recommend [FateInjector](https://github.com/fligger/FateInjector) but this is optional.
+  
+  1. Disable BattlEye
+  2. Install FSL into your GTA V Legacy / GTA V Enhanced Game Directory
+  3. Set up FateInjector, Check Custom Target, Type: GTA5.exe (for Legacy) / GTA5_Enhanced.exe (for Enhanced), press SELECT, Find Chronix.dll > Open
+  4. Launch your chosen game, Press Alt + Tab to FateInjector and press inject after the R* Logos vanish.
+  
 ## Table of contents
 
  * [How to build](#how-to-build)

@@ -77,47 +77,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Delete Existing Release
-        id: delete_release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const tag = "nightly";
-      
-            // List all releases and find the release by tag
-            const releases = await github.rest.repos.listReleases({
-              owner: owner,
-              repo: repo,
-            });
-      
-            const release = releases.data.find(release => release.tag_name === tag);
-      
-            // Check if the release exists and delete it
-            if (release) {
-              await github.rest.repos.deleteRelease({
-                owner: owner,
-                repo: repo,
-                release_id: release.id,
-              });
-              console.log(`Deleted release with ID ${release.id}`);
-            } else {
-              console.log("No existing release to delete");
-            }
-      
-            // Delete the tag
-            try {
-              await github.rest.git.deleteRef({
-                owner: owner,
-                repo: repo,
-                ref: `tags/${tag}`,
-              });
-              console.log(`Deleted tag ${tag}`);
-            } catch (error) {
-              console.error(`Error deleting tag: ${error.message}`);
-            }
-
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:

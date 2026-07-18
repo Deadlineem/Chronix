@@ -29,7 +29,7 @@ jobs:
           fi
 
   build_nightly:
-    runs-on: windows-2022
+    runs-on: windows-latest
     name: Build Nightly
     needs: check_recent_commit
     if: needs.check_recent_commit.outputs.should_run == 'true'
@@ -53,7 +53,7 @@ jobs:
         run: cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo -D OPTIMIZE=YES -D CMAKE_POLICY_VERSION_MINIMUM=3.5 -S. -Bbuild -G Ninja
 
       - name: Build 64bit release DLL
-        run: cmake --build ./build --config RelWithDebInfo --target YimMenu --
+        run: cmake --build ./build --config RelWithDebInfo --target Chronix --
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -126,7 +126,7 @@ jobs:
       - name: Echo build sha256
         id: build_sha
         run: |
-          sha256sum YimMenu.dll > sha256.checksum
+          sha256sum Chronix.dll > sha256.checksum
           echo "build_sha=$(cat sha256.checksum)" >> $GITHUB_OUTPUT
           cat sha256.checksum
 

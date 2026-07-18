@@ -53,7 +53,7 @@ jobs:
         run: cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo -D OPTIMIZE=YES -D CMAKE_POLICY_VERSION_MINIMUM=3.5 -S. -Bbuild -G Ninja
 
       - name: Build 64bit release DLL
-        run: cmake --build ./build --config RelWithDebInfo --target Chronix --
+        run: cmake --build ./build --config RelWithDebInfo --target YimMenu --
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
